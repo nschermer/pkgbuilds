@@ -1,0 +1,28 @@
+post_remove() {
+  # remove paths
+  sed -i "/opt\/lib/d" etc/ld.so.conf
+  sed -i "/opt\/xfce\/lib/d" etc/ld.so.conf
+
+  # permission
+  chmod 644 etc/ld.so.conf
+}
+
+post_install() {
+  # paths
+  post_remove
+
+  # insert new one
+  echo '/opt/xfce/lib' >> etc/ld.so.conf
+
+  # permission
+  chmod 644 etc/ld.so.conf
+}
+
+post_upgrade() {
+  post_install
+}
+
+op=$1
+shift
+
+$op $*

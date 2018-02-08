@@ -1,0 +1,35 @@
+pkgname=xfce4-base-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Nick's stuff for Xfce on Archlinux"
+groups=('xfce4-git')
+install=xfce4-base.install
+arch=('i686' 'x86_64')
+license=('GPL')
+source=(http://samba.org/ftp/unpacked/junkcode/findstatic.pl)
+md5sums=(1a40ce5662cc2b84ce1bebdf49c0a54b)
+
+build() {
+  return 0
+}
+
+package() {
+  # profile data
+  install -D -m755 $startdir/xfce4.profile $pkgdir/etc/profile.d/xfce4.sh
+
+  # dbus service
+  install -d -m755 $pkgdir/opt/xfce/share/dbus-1/services
+  touch $pkgdir/opt/xfce/share/dbus-1/services/.keep
+  install -D -m644 $startdir/xfce4-dbus.conf $pkgdir/etc/dbus-1/session.d/xfce4.conf
+
+  # scripts
+  install -D -m755 $startdir/scripts/xbs $pkgdir/opt/xfce/bin/xbs
+  install -D -m755 $startdir/scripts/licensecheck.pl $pkgdir/opt/xfce/bin/xbs-licensecheck
+  install -D -m755 $startdir/src/findstatic.pl $pkgdir/opt/xfce/bin/xbs-findstatic
+
+  # *kit permissions
+  #install -D -m644 $startdir/org.freedesktop.consolekit.pkla $pkgdir/etc/polkit-1/localauthority/50-local.d/org.freedesktop.consolekit.pkla
+  #install -D -m644 $startdir/org.freedesktop.udisks.pkla $pkgdir/etc/polkit-1/localauthority/50-local.d/org.freedesktop.udisks.pkla
+  #install -D -m644 $startdir/org.freedesktop.upower.pkla $pkgdir/etc/polkit-1/localauthority/50-local.d/org.freedesktop.upower.pkla
+  #chmod 700 $pkgdir/etc/polkit-1/localauthority
+}

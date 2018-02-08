@@ -1,0 +1,30 @@
+pkgname=xfce4-panel-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Xfce's Panel"
+url="http://www.xfce.org/"
+arch=('i686' 'x86_64')
+license=('GPL')
+groups=('xfce4-git')
+options=('!libtool')
+conflicts=('xfce4-panel')
+depends=('libxfce4util-git' 'libxfce4ui-git' 'garcon-git' 'exo-git' 'libwnck3')
+makedepends=('git' 'xfce4-dev-tools-git')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-gen-doc \
+    --disable-debug \
+    --disable-static
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

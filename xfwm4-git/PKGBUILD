@@ -1,0 +1,33 @@
+pkgname=xfwm4-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="The Xfce window manager, complient to Freedesktop standards"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+conflicts=('xfwm4')
+license=('GPL')
+depends=('libxfce4ui-git' 'libxrandr' 'libwnck' 'libxcomposite' 'libxdamage')
+makedepends=('git' 'xfce4-dev-tools-git')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --enable-compositor \
+    --enable-randr \
+    --enable-render \
+    --enable-xsync \
+    --disable-debug \
+    --disable-static \
+    --disable-gen-doc
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

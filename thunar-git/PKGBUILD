@@ -1,0 +1,38 @@
+pkgname=thunar-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Thunar is a modern file manager for Xfce"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('thunar')
+depends=('exo-git' 'gtk2' 'dbus-glib' 'libxfce4util-git' 'startup-notification'
+         'hicolor-icon-theme' 'libexif' 'udev' 'shared-mime-info' 'eject')
+makedepends=('git' 'xfce4-dev-tools-git' 'intltool' 'libxfce4ui-git')
+options=('!libtool')
+source=()
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --enable-dbus \
+    --enable-startup-notification \
+    --disable-gtk-doc \
+    --disable-gen-doc \
+    --disable-static \
+    --enable-tpa-plugin \
+    --disable-wallpaper-plugin
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

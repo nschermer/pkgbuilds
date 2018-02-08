@@ -1,0 +1,30 @@
+pkgname=ristretto-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="A fast and lightweight picture-viewer for Xfce"
+url="http://www.xfce.org/"
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('ristretto')
+groups=('xfce4-git')
+depends=('libxfce4util-git' 'exo-git' 'libexif')
+makedepends=('git' 'xfce4-dev-tools-git')
+options=('!libtool')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-static
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,35 @@
+pkgname=tumbler-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Thumbnail service implementing the thumbnail management D-Bus specification"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('tumbler')
+depends=('dbus-glib' 'gdk-pixbuf2' 'poppler-glib')
+makedepends=('git' 'intltool')
+options=('!libtool')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-gstreamer-thumbnailer \
+    --disable-font-thumbnailer \
+    --disable-ffmpeg-thumbnailer \
+    --disable-odf-thumbnailer \
+    --disable-raw-thumbnailer \
+    --disable-static
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

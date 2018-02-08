@@ -1,0 +1,28 @@
+pkgname=xfce4-appfinder-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Xfce application finder"
+url="http://www.xfce.org/"
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('xfce4-appfinder')
+groups=('xfce4-git')
+
+depends=('libxfce4util-git' 'libxfce4ui-git' 'garcon-git')
+makedepends=('git' 'xfce4-dev-tools-git')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

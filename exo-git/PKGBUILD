@@ -1,0 +1,31 @@
+pkgname=exo-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Extensions to Xfce"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('LGPL')
+conflicts=('exo')
+depends=('perl-uri')
+makedepends=('git' 'xfce4-dev-tools-git' 'gtk-doc')
+options=('!libtool')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd $srcdir/$pkgname
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-python \
+    --disable-static \
+    --disable-gen-doc
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname
+  make DESTDIR="$pkgdir" install
+}

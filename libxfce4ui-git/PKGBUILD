@@ -1,0 +1,30 @@
+pkgname=libxfce4ui-git
+pkgver=4.10
+pkgrel=29646
+pkgdesc="Shared widgets for the Xfce Desktop"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('libxfce4ui')
+options=('!libtool')
+depends=('libxfce4util-git' 'xfconf-git' 'libx11' 'gtk2' 'gtk3')
+makedepends=('git' 'xfce4-dev-tools-git')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-static \
+    --enable-gtk3
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,30 @@
+pkgname=xfce4-power-manager-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="Power manager for Xfce"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('GPL')
+conflicts=('xfce4-power-manager')
+depends=('libxfce4ui-git' 'libnotify' 'xfconf-git' 'libxrandr' 'dbus-glib' 'xfce4-panel-git' 'polkit')
+makedepends=('git' 'intltool')
+options=('!libtool')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-static
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}

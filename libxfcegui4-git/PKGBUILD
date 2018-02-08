@@ -1,0 +1,31 @@
+pkgname=libxfcegui4-git
+pkgver=4.10
+pkgrel=1
+pkgdesc="GTK2 widgets for Xfce"
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+arch=('i686' 'x86_64')
+license=('GPL')
+options=('!libtool')
+conflicts=('libxfcegui4')
+depends=('startup-notification' 'gtk2' 'libxfce4util-git' 'xfconf-git' 'libglade')
+makedepends=('git' 'xfce4-dev-tools-git')
+
+build() {
+  git clone $MY_XFCE_GIT_DIR/${pkgname%-git}/ $startdir/src/$pkgname || return 1
+  cd "$srcdir/$pkgname"
+
+  # build
+  ./autogen.sh \
+    --prefix=/opt/xfce \
+    --disable-debug \
+    --disable-static \
+    --disable-gladeui
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  make DESTDIR="$pkgdir" install
+}
