@@ -6,7 +6,7 @@ then
   exit 1
 fi
 
-if [ ! -c "$MY_XFCE_GIT_DIR" ];
+if [ -c "$MY_XFCE_GIT_DIR" ];
 then
   echo "MY_XFCE_GIT_DIR variable is not set!"
   exit 1
