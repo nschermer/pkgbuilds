@@ -21,7 +21,7 @@ else
   packages="xfce4-base-git xfce4-dev-tools-git libxfce4util-git xfconf-git libxfce4ui-git garcon-git"
   packages="$packages  exo-git xfce4-panel-git thunar-git xfce4-terminal-git thunar-volman-git"
   packages="$packages tumbler-git xfce4-appfinder-git xfce4-session-git xfce4-settings-git"
-  packages="$packages xfwm4-git xfdesktop-git xfce4-notifyd-git"
+  packages="$packages xfwm4-git xfdesktop-git xfce4-notifyd-git ristretto-git"
 fi
 
 for package in $packages;
