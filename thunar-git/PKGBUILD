@@ -8,7 +8,7 @@ arch=('i686' 'x86_64')
 license=('GPL')
 conflicts=('thunar')
 depends=('exo-git' 'gtk2' 'dbus-glib' 'libxfce4util-git' 'startup-notification'
-         'hicolor-icon-theme' 'libexif' 'udev' 'shared-mime-info' 'eject')
+         'hicolor-icon-theme' 'libexif' 'udev' 'shared-mime-info' 'util-linux')
 makedepends=('git' 'xfce4-dev-tools-git' 'intltool' 'libxfce4ui-git')
 options=('!libtool')
 source=()
